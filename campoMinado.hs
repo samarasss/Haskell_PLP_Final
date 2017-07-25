@@ -74,16 +74,20 @@ imprimeMatriz (z: mtz)
 	|z== (-1) = imprimeMatriz mtz ++ " * |"
 	|otherwise = imprimeMatriz mtz ++" "++show z++" |"
 
+--Função que modifica a matriz que é mostrada ao usuário pela matriz original(matriz que contém todas as informações)
 modificaTodaMatriz:: Matriz -> Matriz -> Matriz -> Matriz
 modificaTodaMatriz [] mtz mtz_usuario = mtz_usuario
 modificaTodaMatriz (((a,b), c):mtz_CM) mtz mtz_usuario = modificaTodaMatriz mtz_CM mtz (modificaMatriz a b mtz mtz_usuario)
 
+--Função que recebe o valor das coordenadas x e y e passa para a função modifica 
 modificaMatriz:: Int -> Int -> Matriz -> Matriz -> Matriz
 modificaMatriz x y (((a,b), c):mtz) mtz_usuario = if (x == a && y == b) then ( (modifica x y c mtz_usuario [])) else modificaMatriz x y mtz mtz_usuario
 
+--Função que modifica a matriz do usuário de acordo com as coordenadas recebidas
 modifica:: Int -> Int -> Int -> Matriz -> Matriz -> Matriz 
 modifica x y z (((a,b), c):mtz_usuario) anterior = if (x == a && y == b) then anterior++(([((x, y), z)]++mtz_usuario)) else modifica x y z mtz_usuario (anterior++[((a,b), c)])
  
+--Função que recebe o valor da coordenada y e imprime a matriz resultante para o usuário, após a chamada de algumas funções
 inputy::Matriz -> Matriz -> Int -> IO()
 inputy mtz_CM mtz_Im x = do
 	putStr "Digite o eixo y: "
@@ -97,6 +101,7 @@ inputy mtz_CM mtz_Im x = do
 		imprimeLista (reverse matriz_usuario)
 		if(verificaMtz matriz_usuario) then putStrLn(Textos.textoPerdeu) else whileMain mtz_CM matriz_usuario 
 
+--Função que recebe o valor da coordenada x e chama a função inputy
 inputx::Matriz -> Matriz -> IO()
 inputx mtz_CM mtz_Im = do
 	putStr "Digite o eixo x: "
